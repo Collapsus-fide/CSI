@@ -12,24 +12,6 @@ try {
             $p->appendToHead("<meta http-equiv='refresh' content='3; URL=eleves.php'>");
             break;
         
-        case 'p':
-            $user = Professeur::createFromAuthSHA512($_REQUEST) ;
-            $user->saveIntoSession() ;
-            $p->appendToHead("<meta http-equiv='refresh' content='3; URL=professeurs.php'>");
-            break;
-        
-        case 's':
-            $user = Entreprise::createFromAuthSHA512($_REQUEST) ;
-            $user->saveIntoSession() ;
-            $p->appendToHead("<meta http-equiv='refresh' content='3; URL=entreprises.php'>");
-            break;
-            
-        case 'g':
-            $user = Professeur::createFromAuthSHA512($_REQUEST) ;
-            $user->saveIntoSession() ;
-            $p->appendToHead("<meta http-equiv='refresh' content='3; URL=gestion.php'>");
-            break;
-        
         default:
             $p->appendToHead(<<<HTML
                 <meta http-equiv="refresh" content="1; URL=index.html">
