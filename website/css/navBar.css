@@ -3,17 +3,17 @@
 }
 
 .navbar .nav-link {
-    color: #fff;
+    color: #4ca1af;
 }
 
 .navbar .nav-link:hover,
 .navbar .nav-link:focus {
-    color: #fff;
+    color: #4ca1af;
     text-decoration: none;
 }
 
 .navbar .navbar-brand {
-    color: #fff;
+    color: #4ca1af;
 }
 
 
