@@ -5,11 +5,10 @@ $p = new WebPage('Authentification') ;
 
 try {
 
-    switch ($_GET['u']) {
-        case 'e':
-            $user = Etudiant::createFromAuthSHA512($_REQUEST) ;
+    switch ($_GET['user']) {
+            $user = User::createFromAuthSHA512($_REQUEST);
             $user->saveIntoSession() ;
-            $p->appendToHead("<meta http-equiv='refresh' content='3; URL=eleves.php'>");
+            $p->appendToHead("<meta http-equiv='refresh' content='3; URL=index.php'>");
             break;
         
         default:

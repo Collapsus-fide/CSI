@@ -1,10 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once 'class/WebPage.class.php';
+include "autoload.include.php";
 
-if (isset($_GET["index"])) {
-    $index= $_GET["index"];
-}
 $page = new WebPage('CSI');
 $page->appendToHead(<<<HTML
 <meta charset="UTF-8" />
@@ -14,15 +11,12 @@ $page->appendToHead(<<<HTML
 HTML
 );
 $page->appendCssUrl("css/navBar.css");
-$page->appendCssUrl("bootstrap/css/bootstrap.min.css");
-$page->appendCssUrl("fontAwesome/css/font-awesome.min.css");
+$page->appendCssUrl("bootstrap/css/bootstrap.css");
+$page->appendCssUrl("fontAwesome/css/fontawesome.css");
 
-$page->appendCssUrl("css/carrousel.css");
 
-$page->appendJsUrl("bootstrap/js/bootstrap.min.js");
-$page->appendJsUrl("js/jquery-3.3.1.slim.min.js");
+$page->appendJsUrl("js/jquery-3.6.0.js");
 
-$page->appendJsUrl("js/carrousel.js");
 $page->appendJs(<<<JS
 $(function () {
     $(window).on('scroll', function () {
@@ -57,47 +51,7 @@ $page->appendContent(<<<HTML
 
 HTML
 );
-$images = [];
-if (isset($index)){
-    //$images= image::getFromIdProd($index);
-}else{
-    //$images = image::getFromIdProd(1);
-}
-
-$encodedImage = '';
-$page->appendCssUrl('css/carrousel.css');
 $page->appendContent(<<<HTML
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    
-  </ol>
-  <div class="carousel-inner">
-HTML
-);
-        $page->appendContent(<<<HTML
-            <div class="carousel-item active">
-HTML
-        );
-    $page->appendContent(<<<HTML
-            <img class="d-block w-100 " src="images/tomates.PNG" alt="Erreur d'affichage">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>test</h5>
-                <p>test2</p>
-            </div>
-        </div>
-HTML
-    );
-$page->appendContent(<<<HTML
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
 <div class="container">
     <div class="pt-5 text-white">
         <div class="py-5">

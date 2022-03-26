@@ -77,7 +77,7 @@ $p->appendToHead(<<<HTML
     <!-- Icomoon Icon Fonts-->
     <link rel="stylesheet" href="css/icomoon.css">
     <!-- Bootstrap  -->
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <!-- Flexslider  -->
     <link rel="stylesheet" href="css/flexslider.css">
     <!-- Theme style  -->
@@ -108,11 +108,11 @@ HTML
 
 $p->appendContent(<<<HTML
 <!-- jQuery -->
-    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
     <!-- jQuery Easing -->
     <script src="js/jquery.easing.1.3.js"></script>
     <!-- Bootstrap -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <!-- Waypoints -->
     <script src="js/jquery.waypoints.min.js"></script>
     <!-- Flexslider -->

@@ -9,7 +9,7 @@ class Session {
     static public function start() {
         switch (session_status()) {
             case PHP_SESSION_DISABLED : 
-                throw new SessionException("Le serveur n'est pas paramètré pour les sessions.") ;
+                throw new SessionException("Le serveur n'est pas parametré pour les sessions.") ;
                 break ;
 
             case PHP_SESSION_NONE : 
