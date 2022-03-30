@@ -1,5 +1,5 @@
 <?php
-require_once('autoload.include.php') ;
+require_once('../autoload.include.php') ;
 require_once('MyPDO.template.php') ;
 require_once('MyPDO.class.php') ;
 
@@ -10,7 +10,7 @@ class NotInSessionException extends Exception { }
 /**
 * Class Utilisateur liant la Platform à la BD.
 */
-abstract class User extends Entity {
+class User extends Entity {
     /**
      * Identifiant unique du User dans la base de données
      * @var string $id
@@ -62,6 +62,7 @@ abstract class User extends Entity {
      * Constructeur privé pour éviter de l'instancier.
      */
     private function __construct() {
+
     }
 
     protected static function createFromId(int $id){
@@ -102,13 +103,13 @@ abstract class User extends Entity {
 HTML;
     }
 
-    /*
+    /**
      * formulaire de connexion
      * @param string $action URL (action) vers la cible du formulaire
      * @param string $submitText texte du bouton d'envoi
      *
      * @return string code HTML du formulaire
-     
+     */
     static public function loginForm(string $action, string $submitText = 'OK') : string {
         return <<<HTML
   <div class="p-2 row-xs-12 col-lg-3 center">
@@ -150,15 +151,15 @@ HTML;
             </div>
         </div>
 HTML;
-    }*/
+    }
 
-    /*
+    /**
      * Validation de la connexion de l'utilisateur
      * @param array $data tableau contenant les clés 'login' et 'pass' associées au login et au mot de passe
      * @throws AuthenticationException si l'authentification échoue
      *
      * @return User utilisateur authentifié
-     *
+     */
     public static function createFromAuth(array $data) : self {
         if (!isset($data['login']) || !isset($data['pass'])) {
             throw new AuthenticationException("Les paramètres Login et mot de passe sont vide.") ;
@@ -170,7 +171,7 @@ HTML;
     FROM user
     WHERE login    = :login
     AND   sha512pass = SHA2(:pass, 512)
-    SQL
+SQL
     ) ;
 
         $stmt->execute(array(
@@ -187,7 +188,6 @@ HTML;
             throw new AuthenticationException("Couple Login/ mot de passe incorrect") ;
         }
     }
-    */
 
 /**
      * Formulaire de déconnexion de l'utilisateur
@@ -247,8 +247,8 @@ HTML;
      *
      * @return User
      */
-    abstract static public function createFromSession() ;
-    /*{
+    static public function createFromSession()
+    {
         Session::start() ;
         if (isset($_SESSION[self::session_key]['user'])) {
             $u = $_SESSION[self::session_key]['user'] ;
@@ -258,7 +258,7 @@ HTML;
             }
         }
         throw new NotInSessionException() ;
-    }*/
+    }
 
     static public function randString($length = 16) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -398,8 +398,8 @@ HTML;
      *
      * @return User utilisateur authentifié
      */
-    abstract public static function createFromAuthSHA512(array $data)  ;
-    /*{
+    public static function createFromAuthSHA512(array $data)
+    {
         if (!isset($data['code'])) {
             throw new AuthenticationException("pas de login/pass fournis") ;
         }
@@ -427,6 +427,6 @@ SQL
         else {
             throw new AuthenticationException("Login/pass incorrect") ;
         }
-    }*/
+    }
 }
 
