@@ -1,7 +1,12 @@
 <?php
-require_once('../autoload.include.php') ;
+
+if (file_exists('../autoload.include.php')) {
+    require_once('../autoload.include.php');
+}else if(file_exists('autoload.include.php')){
+    require_once('autoload.include.php');
+}
+
 require_once('MyPDO.template.php') ;
-require_once('MyPDO.class.php') ;
 
 class AuthenticationException extends Exception { }
 
