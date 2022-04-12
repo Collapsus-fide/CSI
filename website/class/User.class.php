@@ -289,7 +289,7 @@ HTML;
         $_SESSION[self::session_key]['challenge'] = Self::randString(16) ;
 
         return <<<HTML
-<script type='text/javascript' src='sha512.js'></script>
+<script type='text/javascript' src='js/sha512.js'></script>
 <script type='text/javascript'>
 function crypter(f, challenge) {
     if (f.login.value.length && f.pass.value.length) {
@@ -305,9 +305,6 @@ function crypter(f, challenge) {
         
         <div class="p-2 row-xs-12 col-lg-3 center">
             <div class="center">
-                <div>
-                    <img src="images/logo_urca.png">
-                </div>
                 <form class="w-p100 form-align center-block" name='auth' action='$action' method='POST' onSubmit="return crypter(this, '{$_SESSION[self::session_key]['challenge']}')" autocomplete='off' id="login">
                     <input type="hidden" name="anchor" value="">
                     <script>document.getElementById('anchor').value = location.hash;</script>
@@ -337,60 +334,6 @@ function crypter(f, challenge) {
                 </form> 
             </div>
         </div>
-
-
-        <div class="col-md-8 col-lg-10 float-left">
-            <div id="fh5co-main float-left">
-            <aside id="fh5co-hero" class="js-fullheight">
-                <div class="flexslider js-fullheight">
-                    <ul class="slides">
-                    <li">
-                        <div class="overlay"></div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-                                    <div class="slider-text-inner">
-                                        <h1>Nouveautée <strong>Webgestion Adminitrator 2020</strong> </h1>
-                                        <h2>Gestion des notes, projets et stage sur le nouveau site. <a href="" target="_blank">Tutoriel.</a></h2>
-                                            <p><a class="btn btn-primary btn-demo popup-vimeo" href=""> Live Preview</a> <a class="btn btn-primary btn-learn">Learn More</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li">
-                        <div class="overlay"></div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-                                    <div class="slider-text-inner">
-                                        <h1>La Game Jam de M. Blanchard est de RETOUR !!!</h1>
-                                            <h2>Voir les éditions précedente. <a href="" target="_blank">Site de M.Blanchard.</a></h2>
-                                            <p><a class="btn btn-primary btn-demo popup-vimeo" href="https://iut-info.univ-reims.fr/public/jeux/#gamejam">  2018 </a> <a class="btn btn-primary btn-learn"> 2019 </a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li">
-                        <div class="overlay"></div>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
-                                    <div class="slider-text-inner">
-                                        <h1>Download our Free HTML5 Bootstrap Template</h1>
-                                            <h2>Free html5 templates Made by <a href="" target="_blank">freehtml5.co</a></h2>
-                                            <p><a class="btn btn-primary btn-demo popup-vimeo" href="">Live Preview</a> <a class="btn btn-primary btn-learn">Learn More</i></a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
-
     </div>
 </div>
 HTML;

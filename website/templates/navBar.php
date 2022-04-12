@@ -31,8 +31,8 @@ $page->appendContent(<<<HTML
 HTML
 );
 if ($connected){
-//TODO
-}else{
+    $page->appendContent(User::logoutForm()
+    );}else{
     $page->appendContent(<<<HTML
  <li class="nav-item"><a href="connexion.php" class="nav-link text-uppercase font-weight-bold">Connexion</a></li>
 HTML
