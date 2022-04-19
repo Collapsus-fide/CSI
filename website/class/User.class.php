@@ -97,14 +97,15 @@ class User extends Entity {
      * @return string code HTML.
      */
     public function profile() : string {
-            // Affichage
+           /* // Affichage
             return <<<HTML
     <div><span>Nom      </span> : <span>{$this->lastName} </span></div>
     <div><span>Prénom   </span> : <span>{$this->firstName}</span></div>
     <div><span>Login    </span> : <span>{$this->login}    </span></div>
     <div><span>Téléphone</span> : <span>{$this->phone}    </span></div>
     <div><span>E-mail   </span> : <span>{$this->mail}    </span></div>
-    <div><span>Date de naissance</span> : <span>{$this->dateNaissance}    </span></div>
+    <div><span>Date de naissance</span> : <span>{$this->dateNaissance}    </span></div>*/
+           return null;
 HTML;
     }
 
@@ -172,8 +173,8 @@ HTML;
 
         // Préparation de la requête
          $stmt = myPDO::getInstance()->prepare(<<<SQL
-    SELECT id, firstName, lastName, login, phone, mail, dateNaissance
-    FROM user
+    SELECT id, login
+    FROM utilisateur
     WHERE login    = :login
     AND   sha512pass = SHA2(:pass, 512)
 SQL
@@ -327,6 +328,7 @@ function crypter(f, challenge) {
 
                     <div class="fh5co-cards">
                         <a class="float-center" href="/login/forgot_password.php">Mot de passe oublié ?</a>
+                        <a class="float-center" href="inscription.php">Pas encore inscrit ?</a>
                     </div>
                     
                     <button type="submit" class="btn btn-primary input-form" id="loginbtn">Connexion</button>
@@ -353,10 +355,11 @@ HTML;
         }
 
         Session::start() ;
-        // Préparation : 
+        // Préparation :
+        // firstName, lastName, login, phone, mail, DATE_FORMAT(dateNaissance, '%d %m %Y')
         $stmt = MyPDO::getInstance();
         $stmt = $stmt->prepare(<<<SQL
-    SELECT id, firstName, lastName, login, phone, mail, DATE_FORMAT(dateNaissance, '%d %m %Y')
+    SELECT id, login
     FROM user
     WHERE SHA2(CONCAT(sha512pass, :challenge, SHA2(login, 512)), 512) = :code
 SQL
@@ -376,5 +379,97 @@ SQL
             throw new AuthenticationException("Login/pass incorrect") ;
         }
     }
+
+    public static function SignUpForm(String $action){
+        $p = new WebPage("inscription");
+        include "templates/imports.php";
+        $p->appendCssUrl("css/inscription.css");
+        $p->appendContent(<<<HTML
+    <!--
+    Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Creative Colorlib SignUp Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>Creative SignUp Form</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form action="signUpRequest.php" method="post">
+					<input class="text" type="text" name="Username" placeholder="Username" required="">
+					<input class="text email" type="email" name="email" placeholder="Email" required="">
+					<input class="text" type="password" name="password" placeholder="Password" required="">
+					<input class="text w3lpass" type="password" name="password" placeholder="Confirm Password" required="">
+					<div class="wthree-text">
+						<label class="anim">
+							<input type="checkbox" class="checkbox" required="">
+							<span>I Agree To The Terms & Conditions</span>
+						</label>
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" value="SIGNUP">
+				</form>
+				<p>Already have an Account? <a href="connexion.php"> Login Now!</a></p>
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+</body>
+</html>
+
+HTML
+        );
+
+        return $p->toHTML();
+
+
+    }
+public static function signUpRequest(array $data){
+    $stmt = MyPDO::getInstance();
+    $stmt = $stmt->prepare(<<<SQL
+insert into user(login,sha512Pass) VALUES (:login,sha2(:pass,512));
+SQL
+    ) ;
+
+    $stmt->execute(array(
+        ':login' => $_REQUEST['Username'],
+        ':pass'  => $_REQUEST['password'])) ;
+
 }
+}
+
+
 
