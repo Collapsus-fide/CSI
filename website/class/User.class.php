@@ -299,14 +299,15 @@ function crypter(f, challenge) {
         return true ;
     }
     return false ;
+    
 }
 </script>
-<div  id="page-login-index" class="format-site  path-login chrome dir-ltr lang-fr yui-skin-sam yui3-skin-sam cours-univ-reims-fr pagelayout-login course-1 context-1 notloggedin page-login-v2 layout-full page-dark">
-    <div class="d-flex flex-row wrap">
+<div  id="page-login-index" class="path-login chrome dir-ltr lang-fr yui-skin-sam yui3-skin-sam pagelayout-login course-1 context-1 notloggedin page-login-v2 layout-full page-dark">
+    <div class="d-flex flex-row wrap bg-white justify-content-center position-sticky ">
         
-        <div class="p-2 row-xs-12 col-lg-3 center">
-            <div class="center">
-                <form class="w-p100 form-align center-block" name='auth' action='$action' method='POST' onSubmit="return crypter(this, '{$_SESSION[self::session_key]['challenge']}')" autocomplete='off' id="login">
+        <div class="p-2 row-xs-12 col-lg-3">
+            <div>
+                <form class="w-p100 pt-5 form-align center-block" name='auth' action='$action' method='POST' onSubmit="return crypter(this, '{$_SESSION[self::session_key]['challenge']}')" autocomplete='off' id="login">
                     <input type="hidden" name="anchor" value="">
                     <script>document.getElementById('anchor').value = location.hash;</script>
                     

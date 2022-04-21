@@ -25,13 +25,13 @@ $page->appendContent(<<<HTML
             <div id="navbarSupportedContent" class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="index.php" class="nav-link text-uppercase font-weight-bold">Home <span class="sr-only">(current)</span></a></li>
-                    <li class="nav-item"><a href="about.php" class="nav-link text-uppercase font-weight-bold">About</a></li>
                     <li class="nav-item"><a href="produits.php" class="nav-link text-uppercase font-weight-bold">produits</a></li>
                     <li class="nav-item"><a href="panier.php" class="nav-link text-uppercase font-weight-bold">Panier</a></li>
 HTML
 );
 if ($connected){
     $page->appendContent(<<<HTML
+    <li class="nav-item"><a href="commandesCli.php" class="nav-link text-uppercase font-weight-bold">Mes commandes</a></li>
 <li class="nav-item"><a href="connexion.php?logout" class="nav-link text-uppercase font-weight-bold">Déconnexion</a></li>
 HTML
 

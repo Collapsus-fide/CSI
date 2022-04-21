@@ -4,7 +4,7 @@ require_once('autoload.include.php');
 
 User::logoutIfRequested();
 
-$p = new WebPage('hello');
+$page = new WebPage('connexion');
 
 try {
             $u = User::createFromSession();
@@ -24,7 +24,7 @@ HTML
     }
 include "templates/imports.php";
 
-    $p->appendCSS(<<<CSS
+    $page->appendCSS(<<<CSS
     form input {
         width : 4em ;
     }
@@ -32,15 +32,13 @@ CSS
     );
 
 
-    $p->appendContent(<<<HTML
-        <div class="d-flex flex-row wrap">
-            {$form}
-        </div>
+    $page->appendContent(<<<HTML
+                {$form}
 HTML
     );
 
 
-echo $p->toHTML();
+echo $page->toHTML();
 
 
 /*                <div class="form-group clearfix">
