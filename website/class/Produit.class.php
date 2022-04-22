@@ -21,7 +21,7 @@ class Produit extends Entity
         $stmt = myPDO::getInstance()->prepare(<<<SQL
     SELECT *
     FROM Produit
-    WHERE numProduit = :id
+    WHERE id_Produit = :id
 SQL
         ) ;
 
