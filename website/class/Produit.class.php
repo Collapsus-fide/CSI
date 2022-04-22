@@ -73,13 +73,12 @@ SQL
 
         $stmt->execute($data);
     }
-    public static function addProd(int $id, string $libele){
+    public static function addProd(string $libele){
         $data = [
-            ':id'=>$id,
             ':libele'=>$libele
         ];
         $stmt = MyPDO::getInstance()->prepare(<<<SQL
-INSERT INTO Produit (num_prod,lib_prod)VALUES (:id, :libele);
+INSERT INTO Produit (nom)VALUES (:libele);
 SQL
         );
         $stmt->execute($data);

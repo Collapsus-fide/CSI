@@ -75,7 +75,7 @@ SQL
 
         $stmt->execute($data);
     }
-    
+
     public static function addCommande(int $id, string $libele){
         //TODO
     }
