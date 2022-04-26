@@ -3,12 +3,39 @@ require_once ("autoload.include.php");
 try{
     $u = User::createFromSession();
 }catch (NotInSessionException $e){
-    header("Location: http://{$_SERVER['SERVER_NAME']}/".dirname($_SERVER['PHP_SELF'])."/form.php") ;
+    header("Location: http://{$_SERVER['SERVER_NAME']}/".dirname($_SERVER['PHP_SELF'])."/connexion.php") ;
     die() ;
 }
 
 include "templates/imports.php";
 $produits = Produit::getAll();
+$page->appendJsUrl("js/ajaxrequest.js");
+$page->appendJs(<<<JS
+    $('#envoie').click(function(){
+     new AjaxRequest(
+        {
+            url        : "envoieCommande.php",
+            method     : 'Get',
+            handleAs   : "Json",
+            parameters : {
+                id : {$u->getId()},
+                panier : monPanier
+                date : dateParam
+                paiement : paiementParam
+                
+                wait:""
+            },
+            onSuccess  : function(res) {
+                                window.alert('Error ' + status + ': ' + message) ;
+
+            },
+            onError : function(res) {
+                window.alert('Error ' + status + ': ' + message) ;
+            }
+        });
+}
+JS
+);
 $page->appendToHead(<<<HTML
 <script type="text/javascript">
 
@@ -130,44 +157,6 @@ $page->appendContent(<<<HTML
         <br><label>Prix du panier total</label> : <label id = "prixTotal"></label>
         <label id = "nbreLignes" hidden>0</label>
     </article>
-
-<script type="text/javascript">
-function envoie(){
-            var monPanier = new Panier();
-            var 
-            var tableau = document.getElementById("tableau");
-            var longueurTab = parseInt(document.getElementById("nbreLignes").innerHTML);
-            if (longueurTab > 0)
-            {
-                for(var i = longueurTab ; i > 0  ; i--)
-                {
-                    monPanier.ajouterArticle(parseInt(tableau.rows[i].cells[0].innerHTML), parseInt(tableau.rows[i].cells[1].innerHTML), parseInt(tableau.rows[i].cells[2].innerHTML));
-                    tableau.deleteRow(i);
-                }
-            }
-    req = new AjaxRequest(
-        {
-            url        : "envoieCommande.php",
-            method     : 'Get',
-            handleAs   : "Json",
-            parameters : {
-                id : {$u->getId()},
-                panier : monPanier
-                date : dateParam
-                paiement : paiementParam
-                
-                wait:""
-            },
-            onSuccess  : function(res) {
-                document.getElementById("tableau").innerHTML = "";
-                req = null ;
-            },
-            onError : function(res) {
-                req = null ;
-            }
-        });
-}
-</script>
 </section>
 </div>
 <input type="datetime-local" id="date" name="date"
@@ -178,8 +167,9 @@ function envoie(){
 <label for="No">No</label><br>
 <input type="radio" id="paiement" name="paiement" value="Yes">
 <label for="Yes">Yes</label><br>
-
-            <button class="btn btn-primary" type="submit" onclick="envoie()"><span class="glyphicon glyphicon-shopping-cart"></span>envoyer</button>
+<button id="envoie">Click me</button>
+            
 HTML
 );
+
 echo $page->toHTML();

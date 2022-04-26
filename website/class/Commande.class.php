@@ -7,6 +7,14 @@ if (file_exists('../autoload.include.php')) {
 
 class Commande extends Entity{
 
+    public $id_commande;
+    public $date_commande;
+    public $date_retrait;
+    public $horaire_retrait;
+    public $commande_payee;
+    public $prix_a_payer;
+    public $etat_commande;
+
     /**
      * Usine pour fabriquer une instance à partir d'un identifiant.
      *
@@ -18,7 +26,7 @@ class Commande extends Entity{
      *
      * @return self instance correspondant à $id
      */
-    protected static function createFromId(int $id)
+    protected static function createFromId(int $id):array
     {
         $stmt = myPDO::getInstance()->prepare(<<<SQL
     SELECT *
@@ -29,8 +37,8 @@ SQL
 
         $stmt->execute([$id]) ;
         // Fetch des valeurs retournées.
-        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__) ;
-
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Commande::class) ;
+        return $stmt->fetchAll();
     }
 
     /**
@@ -78,5 +86,26 @@ SQL
 
     public static function addCommande(int $id, string $libele){
         //TODO
+    }
+
+    public static function getByIdCli($id){
+        $data = [
+            'id'=>$id
+        ];
+        $stmt = MyPDO::getInstance()->prepare(<<<SQL
+            SELECT *
+            FROM commande
+            where id_client = :id;
+SQL
+        );
+        $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+        $stmt->execute($data);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getId(): int
+    {
+        return $this->id_commande;
     }
 }

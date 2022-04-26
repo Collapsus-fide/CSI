@@ -20,7 +20,7 @@ class User extends Entity {
      * Identifiant unique du User dans la base de données
      * @var string $id
      */
-    protected $id = null ;
+    public $id_client = null ;
 
     /**
      * Nom
@@ -61,7 +61,7 @@ class User extends Entity {
     /**
      * Clé de session.
      */
-    const session_key = "__user__" ;
+    const session_key = "__client__" ;
 
     /**
      * Constructeur privé pour éviter de l'instancier.
@@ -232,8 +232,8 @@ HTML;
         Session::start() ;
         return (   isset($_SESSION[self::session_key]['connected'])
                 && $_SESSION[self::session_key]['connected'])
-            || (   isset($_SESSION[self::session_key]['user'])
-                && $_SESSION[self::session_key]['user'] instanceof self) ;
+            || (   isset($_SESSION[self::session_key]['client'])
+                && $_SESSION[self::session_key]['client'] instanceof self) ;
     }
 
     /**
@@ -243,7 +243,7 @@ HTML;
         // Mise en place de la session
         Session::start() ;
         // Mémorisation de l'Utilisateur
-        $_SESSION[self::session_key]['user'] = $this ;
+        $_SESSION[self::session_key]['client'] = $this ;
     }
 
     /**
@@ -255,8 +255,8 @@ HTML;
     static public function createFromSession()
     {
         Session::start() ;
-        if (isset($_SESSION[self::session_key]['user'])) {
-            $u = $_SESSION[self::session_key]['user'] ;
+        if (isset($_SESSION[self::session_key]['client'])) {
+            $u = $_SESSION[self::session_key]['client'] ;
 
             if (is_object($u) && get_class($u) == get_class()) {
                 return $u ;
