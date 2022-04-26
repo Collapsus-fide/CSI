@@ -3,6 +3,9 @@
 
 class Produit extends Entity
 {
+    protected $nom;
+    public $prix;
+
 
     /**
      * Usine pour fabriquer une instance à partir d'un identifiant.
@@ -19,7 +22,7 @@ class Produit extends Entity
     {
 // Préparation de la requête
         $stmt = myPDO::getInstance()->prepare(<<<SQL
-    SELECT *
+    SELECT id_produit,nom,prix
     FROM Produit
     WHERE id_Produit = :id
 SQL
@@ -37,10 +40,10 @@ SQL
      * @return self[]
      * @throws Exception
      */
-    protected static function getAll(): array
+    public static function getAll(): array
     {
         $stmt = MyPDO::getInstance()->prepare(<<<SQL
-            SELECT *
+            SELECT id_produit as _id,nom,prix
             FROM Produit
 SQL
         );
@@ -66,7 +69,7 @@ SQL
         ];
         $stmt = MyPDO::getInstance()->prepare(<<<SQL
         DELETE FROM Produit
-        WHERE id_prod = :id;
+        WHERE id_produit = :id;
         
 SQL
         );
@@ -83,5 +86,56 @@ SQL
         );
         $stmt->execute($data);
 
+    }
+
+    public static function changeRestock(int $id,int $restock){
+        $data = [
+            'id'=>$id,
+            'restock'=>$restock
+        ];
+        $stmt = MyPDO::getInstance()->prepare(<<<SQL
+        update produit set restock_prevu = :restock
+        WHERE id_produit = :id;
+        
+SQL
+        );
+
+        $stmt->execute($data);
+    }
+
+    public static function changePrix(int $id,int $prix){
+        $data = [
+            'id'=>$id,
+            'prix'=>$prix
+        ];
+        $stmt = MyPDO::getInstance()->prepare(<<<SQL
+        update produit set prix = :prix
+        WHERE id_produit = :id;
+        
+SQL
+        );
+
+        $stmt->execute($data);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    public function getId(): int
+    {
+        return $this->_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrix()
+    {
+        return floatval(substr($this->prix,1));
     }
 }

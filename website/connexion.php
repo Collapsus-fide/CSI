@@ -20,7 +20,7 @@ HTML
 
 } catch (NotInSessionException $e) {
 
-            $form = User::loginFormSHA512('auth.php');
+            $form = User::loginForm('auth.php');
     }
 include "templates/imports.php";
 

@@ -4,7 +4,7 @@ require_once('autoload.include.php') ;
 $p = new WebPage('Authentification') ;
 
 try {
-            $user = User::createFromAuthSHA512($_REQUEST);
+            $user = User::createFromAuth($_REQUEST);
             $user->saveIntoSession();
             $p->appendToHead("<meta http-equiv='refresh' content='3; URL=index.php'>");
             $p->appendToHead(<<<HTML

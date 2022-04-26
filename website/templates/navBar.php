@@ -26,7 +26,6 @@ $page->appendContent(<<<HTML
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="index.php" class="nav-link text-uppercase font-weight-bold">Home <span class="sr-only">(current)</span></a></li>
                     <li class="nav-item"><a href="produits.php" class="nav-link text-uppercase font-weight-bold">produits</a></li>
-                    <li class="nav-item"><a href="panier.php" class="nav-link text-uppercase font-weight-bold">Panier</a></li>
 HTML
 );
 if ($connected){

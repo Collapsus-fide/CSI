@@ -24,39 +24,39 @@ class User extends Entity {
 
     /**
      * Nom
-     * @var string $lastName
+     * @var string $nom
      */
-    protected $lastName  = null ;
+    protected $nom  = null ;
 
     /**
      * Prénom
-     * @var string $firstName
+     * @var string $prenom
      */
-    protected $firstName = null ;
-
-    /**
-     * Login
-     * @var string $login
-     */
-    protected $login     = null ;
+    protected $prenom = null ;
 
     /**
      * Numéro de téléphone
-     * @var string $phone
+     * @var string $tel
      */
-    protected $phone     = null ;    
+    protected $tel     = null ;
     
     /**
     * Adresse E-mail
     * @var string $mail
     */
-    protected $mail     = null ;    
-    
+    protected $mail     = null ;
+
+
     /**
-    * Date de naissance
-    * @var string $dateNaissance
-    */
-   protected $dateNaissance     = null ;
+     * @var null
+     */
+    protected $points_fidelite = null;
+
+
+    /**
+     * @var null
+     */
+    protected $nb_commande_oubliee = null;
 
     /**
      * Clé de session.
@@ -75,7 +75,7 @@ class User extends Entity {
     }
     
     protected static function getAll() : array{
-        // TODO
+        return void;
     }
     
     public function persist(): bool{
@@ -118,44 +118,43 @@ HTML;
      */
     static public function loginForm(string $action, string $submitText = 'OK') : string {
         return <<<HTML
-  <div class="p-2 row-xs-12 col-lg-3 center">
-            <div class="center">
+  <div  id="page-login-index" class="path-login chrome dir-ltr lang-fr yui-skin-sam yui3-skin-sam pagelayout-login course-1 context-1 notloggedin page-login-v2 layout-full page-dark">
+    <div class="d-flex flex-row wrap bg-white justify-content-center position-sticky ">
+        
+        <div class="p-2 row-xs-12 col-lg-3">
             <div>
-                <img src="images/logo_urca.png">
-            </div>
-            <form class="w-p100 form-align center-block" action="{$action}" method="POST" name='auth' id="login">
-                <input type="hidden" name="anchor" value="">
-                <script>document.getElementById('anchor').value = location.hash;</script>
-                <div class="form-group input-lg input-form ">
-                    <label for="username" class="sr-only">
-                        Nom d'utilisateur
-                    </label>
-                    <input type="text" class="form-control" id="username" name="login" placeholder="Nom d'utilisateur">
-                </div>
-                <div class="form-group input-lg input-form">
-                    <label for="password" class="sr-only">Mot de passe</label>
-                    <input type="password" name="pass" id="password" value="" class="form-control"placeholder="Mot de passe">
-                </div>
-                <div class="form-group">
-                    <input type="hidden" name="logintoken" value="zz1Ac4WA83ZWbwSXRisZPboJsLd4goRN">
-                </div>
-                <div class="form-group clearfix">
-                    <div class="checkbox-custom checkbox-inline checkbox-primary float-left rememberpass">
-                        <input type="checkbox" id="rememberusername" name="rememberusername" value="1"  />
-                        <label for="rememberusername">Se souvenir du nom d'utilisateur</label>
+                <form class="w-p100 pt-5 form-align center-block" name='auth' action='$action' method='POST' autocomplete='off' id="login">
+                    <input type="hidden" name="anchor" value="">
+                    <script>document.getElementById('anchor').value = location.hash;</script>
+                    
+                    <div class="form-group input-lg input-form ">
+                        <label for="username" class="sr-only">
+                            Nom d'utilisateur
+                        </label>
+                        <input type="text" class="form-control" id="username" name="login" placeholder="Nom d'utilisateur">
+                    </div>
+                    
+                    <div class="form-group input-lg input-form">
+                        <label for="password" class="sr-only">Mot de passe</label>
+                        <input type="password" name="pass" id="password" value="" class="form-control"placeholder="Mot de passe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="hidden" name="code">
                     </div>
 
-                </div>
-                <div class="fh5co-cards">
-                    <a class="float-center" href="/forgot_password.php">Mot de passe oublié ?</a>
-                </div>
-                <button type="submit" class="btn btn-primary input-form" id="loginbtn">{$submitText}</button>
+                    <div class="fh5co-cards">
+                        <a class="float-center" href="/login/forgot_password.php">Mot de passe oublié ?</a>
+                        <a class="float-center" href="inscription.php">Pas encore inscrit ?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary input-form" id="loginbtn">Connexion</button>
 
-            </form> 
-            <footer class="page-copyright">
-            </footer>
+                </form> 
             </div>
         </div>
+    </div>
+</div>
 HTML;
     }
 
@@ -173,10 +172,10 @@ HTML;
 
         // Préparation de la requête
          $stmt = myPDO::getInstance()->prepare(<<<SQL
-    SELECT id, login
-    FROM utilisateur
-    WHERE login    = :login
-    AND   sha512pass = SHA2(:pass, 512)
+    SELECT *
+    FROM client
+    WHERE mail    = :login
+    AND   sha512pass = :pass
 SQL
     ) ;
 
@@ -185,10 +184,10 @@ SQL
             ':pass'  => $data['pass'])) ;
         // Fetch des valeurs retournées.
         $stmt->setFetchMode(PDO::FETCH_CLASS, __CLASS__) ;
-        if (($utilisateur = $stmt->fetch()) !== false) {
+        if (($client = $stmt->fetch()) !== false) {
             Session::start() ;
             $_SESSION[self::session_key]['connected'] = true ;
-            return $utilisateur ;
+            return $client ;
         }
         else {
             throw new AuthenticationException("Couple Login/ mot de passe incorrect") ;
@@ -360,9 +359,9 @@ HTML;
         // firstName, lastName, login, phone, mail, DATE_FORMAT(dateNaissance, '%d %m %Y')
         $stmt = MyPDO::getInstance();
         $stmt = $stmt->prepare(<<<SQL
-    SELECT id, login
-    FROM user
-    WHERE SHA2(CONCAT(sha512pass, :challenge, SHA2(login, 512)), 512) = :code
+    SELECT *
+    FROM client
+    WHERE SHA2(CONCAT(sha512pass, :challenge, SHA2(client.mail, 512)), 512) = :code;
 SQL
     ) ;
 
@@ -413,8 +412,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="main-agileinfo">
 			<div class="agileits-top">
 				<form action="signUpRequest.php" method="post">
-					<input class="text" type="text" name="Username" placeholder="Username" required="">
-					<input class="text email" type="email" name="email" placeholder="Email" required="">
+					<input class="text" type="text" name="Nom" placeholder="Nom" required="">
+					<input class="text" type="text" name="Prenom" placeholder="Prenom" required="">
+					<input class="text email" type="email" name="mail" placeholder="Email" required="">
 					<input class="text" type="password" name="password" placeholder="Password" required="">
 					<input class="text w3lpass" type="password" name="password" placeholder="Confirm Password" required="">
 					<div class="wthree-text">
@@ -461,14 +461,15 @@ HTML
 public static function signUpRequest(array $data){
     $stmt = MyPDO::getInstance();
     $stmt = $stmt->prepare(<<<SQL
-insert into user(login,sha512Pass) VALUES (:login,sha2(:pass,512));
+insert into client(mail,sha512Pass,nom,prenom, points_fidelite,nb_commande_oubliée) VALUES (:mail,:pass,:nom,:prenom,0,0);
 SQL
     ) ;
 
     $stmt->execute(array(
-        ':login' => $_REQUEST['Username'],
+        ':nom' => $_REQUEST['Nom'],
+        ':prenom' => $_REQUEST['Prenom'],
+        ':mail' => $_REQUEST['mail'],
         ':pass'  => $_REQUEST['password'])) ;
-
 }
 }
 
