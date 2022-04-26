@@ -23,14 +23,25 @@ foreach ($commandes as $commande) {
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{$commande->getId()}</h5>
-            <p>{$commande->prix_a_payer}</p>
-    </article>
+            <p>prix de la commande : {$commande->prix_a_payer}</p>
+            <p>retrait : {$commande->date_retrait} à {$commande->horaire_retrait} </p>
+HTML
+    );
+    if(!$commande->commande_payee){
+        $page->appendContent("<button >payer</button>");
+    }
+    $page->appendContent(<<<HTML
+</article>
         </div>
     </div>
 </div>
-
 HTML
     );
+
+
+
+
+
 }
 
 
